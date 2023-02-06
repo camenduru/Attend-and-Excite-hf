@@ -8,8 +8,9 @@ import PIL.Image
 from model import Model
 
 DESCRIPTION = '''# Attend-and-Excite
-
-This is an unofficial demo for [https://github.com/AttendAndExcite/Attend-and-Excite](https://github.com/AttendAndExcite/Attend-and-Excite).
+This is a demo for [Attend-and-Excite](https://arxiv.org/abs/2301.13826).
+Attend-and-Excite performs attention-based generative semantic guidance to mitigate subject neglect in Stable Diffusion. 
+Select a prompt and a set of indices matching the subjects you wish to strengthen (the `Check token indices` cell can help map between a word and its index).
 '''
 
 model = Model()
