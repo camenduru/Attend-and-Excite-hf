@@ -76,6 +76,18 @@ with gr.Blocks(css='style.css') as demo:
     with gr.Row():
         examples = [
             [
+                'A mouse and a red car',
+                '2,6',
+                2098,
+                True,
+            ],
+            [
+                'A mouse and a red car',
+                '2,6',
+                2098,
+                False,
+            ],
+            [
                 'A horse and a dog',
                 '2,5',
                 123,
