@@ -161,7 +161,8 @@ with gr.Blocks(css='style.css') as demo:
                         result,
                     ],
                     fn=process_example,
-                    cache_examples=True)
+                    cache_examples=True,
+                    examples_per_page=20)
 
     show_token_indices_button.click(fn=model.get_token_table,
                                     inputs=[
