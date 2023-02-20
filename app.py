@@ -188,4 +188,4 @@ with gr.Blocks(css='style.css') as demo:
     token_indices_str.submit(fn=model.run, inputs=inputs, outputs=outputs)
     run_button.click(fn=model.run, inputs=inputs, outputs=outputs)
 
-demo.queue(max_size=1).launch(share=False)
+demo.queue(max_size=50).launch(share=False)
