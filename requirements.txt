@@ -4,4 +4,4 @@ jupyter
 opencv-python-headless==4.7.0.68
 pyrallis==0.3.1
 torch==1.13.1
-transformers==4.23.1
+transformers==4.26.0
