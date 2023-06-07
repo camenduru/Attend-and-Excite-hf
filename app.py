@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import os
+
 import gradio as gr
 import PIL.Image
 
@@ -9,7 +11,7 @@ from model import Model
 
 DESCRIPTION = '''# Attend-and-Excite
 This is a demo for [Attend-and-Excite](https://arxiv.org/abs/2301.13826).
-Attend-and-Excite performs attention-based generative semantic guidance to mitigate subject neglect in Stable Diffusion. 
+Attend-and-Excite performs attention-based generative semantic guidance to mitigate subject neglect in Stable Diffusion.
 Select a prompt and a set of indices matching the subjects you wish to strengthen (the `Check token indices` cell can help map between a word and its index).
 '''
 
@@ -161,7 +163,7 @@ with gr.Blocks(css='style.css') as demo:
                         result,
                     ],
                     fn=process_example,
-                    cache_examples=True,
+                    cache_examples=os.getenv('CACHE_EXAMPLES') == '1',
                     examples_per_page=20)
 
     show_token_indices_button.click(fn=model.get_token_table,
