@@ -188,6 +188,9 @@ with gr.Blocks(css='style.css') as demo:
     ]
     prompt.submit(fn=model.run, inputs=inputs, outputs=outputs)
     token_indices_str.submit(fn=model.run, inputs=inputs, outputs=outputs)
-    run_button.click(fn=model.run, inputs=inputs, outputs=outputs)
+    run_button.click(fn=model.run,
+                     inputs=inputs,
+                     outputs=outputs,
+                     api_name='run')
 
 demo.queue(max_size=10).launch()
