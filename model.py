@@ -56,7 +56,7 @@ class Model:
             20: 0.8
         },
         max_iter_to_alter: int = 25,
-    ) -> tuple[list[tuple[int, str]], PIL.Image.Image]:
+    ) -> PIL.Image.Image:
         generator = torch.Generator(device=self.device).manual_seed(seed)
         try:
             indices_to_alter = list(map(int, indices_to_alter_str.split(',')))
@@ -64,8 +64,6 @@ class Model:
             raise gr.Error('Invalid token indices.')
 
         self.load_model(model_id)
-
-        token_table = self.get_token_table(model_id, prompt)
 
         controller = AttentionStore()
         config = RunConfig(prompt=prompt,
@@ -82,4 +80,4 @@ class Model:
                               seed=generator,
                               config=config)
 
-        return token_table, image
+        return image

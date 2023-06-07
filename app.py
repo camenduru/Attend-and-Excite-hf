@@ -27,8 +27,11 @@ def process_example(
     model_id = 'CompVis/stable-diffusion-v1-4'
     num_steps = 50
     guidance_scale = 7.5
-    return model.run(model_id, prompt, indices_to_alter_str, seed,
-                     apply_attend_and_excite, num_steps, guidance_scale)
+
+    token_table = model.get_token_table(model_id, prompt)
+    result = model.run(model_id, prompt, indices_to_alter_str, seed,
+                       apply_attend_and_excite, num_steps, guidance_scale)
+    return token_table, result
 
 
 with gr.Blocks(css='style.css') as demo:
@@ -166,12 +169,12 @@ with gr.Blocks(css='style.css') as demo:
                     cache_examples=os.getenv('CACHE_EXAMPLES') == '1',
                     examples_per_page=20)
 
-    show_token_indices_button.click(fn=model.get_token_table,
-                                    inputs=[
-                                        model_id,
-                                        prompt,
-                                    ],
-                                    outputs=token_indices_table)
+    show_token_indices_button.click(
+        fn=model.get_token_table,
+        inputs=[model_id, prompt],
+        outputs=token_indices_table,
+        queue=False,
+    )
 
     inputs = [
         model_id,
@@ -182,15 +185,36 @@ with gr.Blocks(css='style.css') as demo:
         num_steps,
         guidance_scale,
     ]
-    outputs = [
-        token_indices_table,
-        result,
-    ]
-    prompt.submit(fn=model.run, inputs=inputs, outputs=outputs)
-    token_indices_str.submit(fn=model.run, inputs=inputs, outputs=outputs)
-    run_button.click(fn=model.run,
-                     inputs=inputs,
-                     outputs=outputs,
-                     api_name='run')
+    prompt.submit(
+        fn=model.get_token_table,
+        inputs=[model_id, prompt],
+        outputs=token_indices_table,
+        queue=False,
+    ).then(
+        fn=model.run,
+        inputs=inputs,
+        outputs=result,
+    )
+    token_indices_str.submit(
+        fn=model.get_token_table,
+        inputs=[model_id, prompt],
+        outputs=token_indices_table,
+        queue=False,
+    ).then(
+        fn=model.run,
+        inputs=inputs,
+        outputs=result,
+    )
+    run_button.click(
+        fn=model.get_token_table,
+        inputs=[model_id, prompt],
+        outputs=token_indices_table,
+        queue=False,
+    ).then(
+        fn=model.run,
+        inputs=inputs,
+        outputs=result,
+        api_name='run',
+    )
 
 demo.queue(max_size=10).launch()
