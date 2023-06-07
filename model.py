@@ -27,8 +27,8 @@ class Model:
     def load_model(self, model_id: str) -> None:
         if model_id == self.model_id:
             return
-        self.model = AttendAndExcitePipeline.from_pretrained(
-            model_id, revision='249dd2d').to(self.device)
+        self.model = AttendAndExcitePipeline.from_pretrained(model_id).to(
+            self.device)
         self.tokenizer = self.model.tokenizer
         self.model_id = model_id
 
