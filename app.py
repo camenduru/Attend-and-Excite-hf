@@ -24,12 +24,11 @@ def process_example(
     seed: int,
     apply_attend_and_excite: bool,
 ) -> tuple[list[tuple[int, str]], PIL.Image.Image]:
-    model_id = 'CompVis/stable-diffusion-v1-4'
     num_steps = 50
     guidance_scale = 7.5
 
-    token_table = model.get_token_table(model_id, prompt)
-    result = model.run(model_id, prompt, indices_to_alter_str, seed,
+    token_table = model.get_token_table(prompt)
+    result = model.run(prompt, indices_to_alter_str, seed,
                        apply_attend_and_excite, num_steps, guidance_scale)
     return token_table, result
 
@@ -39,9 +38,6 @@ with gr.Blocks(css='style.css') as demo:
 
     with gr.Row():
         with gr.Column():
-            model_id = gr.Text(label='Model ID',
-                               value='CompVis/stable-diffusion-v1-4',
-                               visible=False)
             prompt = gr.Text(
                 label='Prompt',
                 max_lines=1,
@@ -171,13 +167,12 @@ with gr.Blocks(css='style.css') as demo:
 
     show_token_indices_button.click(
         fn=model.get_token_table,
-        inputs=[model_id, prompt],
+        inputs=prompt,
         outputs=token_indices_table,
         queue=False,
     )
 
     inputs = [
-        model_id,
         prompt,
         token_indices_str,
         seed,
@@ -187,7 +182,7 @@ with gr.Blocks(css='style.css') as demo:
     ]
     prompt.submit(
         fn=model.get_token_table,
-        inputs=[model_id, prompt],
+        inputs=prompt,
         outputs=token_indices_table,
         queue=False,
     ).then(
@@ -197,7 +192,7 @@ with gr.Blocks(css='style.css') as demo:
     )
     token_indices_str.submit(
         fn=model.get_token_table,
-        inputs=[model_id, prompt],
+        inputs=prompt,
         outputs=token_indices_table,
         queue=False,
     ).then(
@@ -207,7 +202,7 @@ with gr.Blocks(css='style.css') as demo:
     )
     run_button.click(
         fn=model.get_token_table,
-        inputs=[model_id, prompt],
+        inputs=prompt,
         outputs=token_indices_table,
         queue=False,
     ).then(
