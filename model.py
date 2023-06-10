@@ -11,17 +11,11 @@ class Model:
         self.device = torch.device(
             'cuda:0' if torch.cuda.is_available() else 'cpu')
         model_id = 'CompVis/stable-diffusion-v1-4'
-        if self.device.type == 'cuda':
-            self.ax_pipe = StableDiffusionAttendAndExcitePipeline.from_pretrained(
-                model_id, torch_dtype=torch.float16)
-            self.ax_pipe.to(self.device)
-            self.sd_pipe = StableDiffusionPipeline.from_pretrained(
-                model_id, torch_dtype=torch.float16)
-            self.sd_pipe.to(self.device)
-        else:
-            self.ax_pipe = StableDiffusionAttendAndExcitePipeline.from_pretrained(
-                model_id)
-            self.sd_pipe = StableDiffusionPipeline.from_pretrained(model_id)
+        self.ax_pipe = StableDiffusionAttendAndExcitePipeline.from_pretrained(
+            model_id)
+        self.ax_pipe.to(self.device)
+        self.sd_pipe = StableDiffusionPipeline.from_pretrained(model_id)
+        self.sd_pipe.to(self.device)
 
     def get_token_table(self, prompt: str):
         tokens = [
